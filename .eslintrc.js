@@ -43,7 +43,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:eslint-comments/recommended',
     'plugin:prettier/recommended',
-    'plugin:storybook/recommended',
+    // 'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -59,7 +59,7 @@ module.exports = {
     'jsx-a11y',
     'import',
     'eslint-comments',
-    'storybook',
+    // 'storybook',
     'prettier',
     '@typescript-eslint',
     'react-hooks',

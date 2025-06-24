@@ -1,18 +1,18 @@
 import { makeAutoObservable } from 'mobx'
-import { Button } from 'shared/ui'
+// import { Button } from 'shared/ui'
 
 export class IconStore {
-    private _title = ''
+  private _title = ''
 
-    constructor() {
-        makeAutoObservable(this)
-    }
+  constructor() {
+    makeAutoObservable(this)
+  }
 
-    get title() {
-        return this._title + ' Test'
-    }
+  get title() {
+    return this._title + ' Test'
+  }
 
-    setText = (value: string) => {
-        this._title = value
-    }
+  setText = (value: string) => {
+    this._title = value
+  }
 }
