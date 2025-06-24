@@ -1,15 +1,56 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "lib": ["dom", "esnext"],
-        "module": "esnext",
-        "jsx": "react",
-        "strict": true,
-        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "useDefineForClassFields": true,
+        "lib": ["dom", "dom.iterable", "esnext", "es2017", "es5"],
+        "allowJs": false,
         "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
         "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
         "moduleResolution": "node",
-        "baseUrl": "./src"
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "noImplicitAny": true,
+        "typeRoots": ["node_modules/@types", "src/app/types"],
+        "baseUrl": "src",
+        "paths": {
+            "app/*": [
+                "app/*"
+            ],
+            "pages/*": [
+                "pages/*"
+            ],
+            "widgets/*": [
+                "widgets/*"
+            ],
+            "shared/*": [
+                "shared/*"
+            ],
+            "features/*": [
+                "features/*"
+            ],
+            "entities/*": [
+                "entities/*"
+            ],
+            "models": [
+                "shared/api/models"
+            ],
+            "collections": [
+                "shared/api/collections",
+            ],
+            "icons/*": [
+                "shared/assets/icons/*"
+            ],
+            "sounds/*": [
+                "shared/assets/sounds/*"
+            ]
+        }
     },
-    "include": ["src/**/*.tsx", "src/**/*.ts"]
+    "include": ["src", "types"],
 }
