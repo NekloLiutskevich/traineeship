@@ -1,0 +1,7 @@
+{
+  "*.{ts,tsx,json,md,scss}": "prettier --write",
+  "*.{tsx,ts}": [
+    "cross-env ESLINT_CYCLIC=PART eslint-baseline --baseline-file ./.eslint-baseline.json"
+  ],
+  "*.{ts,tsx}": ["cross-env ESLINT_CYCLIC=OFF eslint --fix"]
+}

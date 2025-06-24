@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
+import { Button } from 'shared/ui'
 
-export class ButtonStore {
+export class IconStore {
     private _title = ''
 
     constructor() {
@@ -8,7 +9,6 @@ export class ButtonStore {
     }
 
     get title() {
-        fsdfsdf
         return this._title + ' Test'
     }
 

@@ -3,8 +3,16 @@ import {ButtonStore} from "shared/ui/Button/store/buttonStore";
 import styles from './styles.module.scss'
 
 
+export enum ENUMKeysButton {
+    test = 1,
+    icon1 = 2,
+    icon2= '1212',
+    icon1112= '1212',
+}
+
 type IButtonProps = {
-    id: number
+    key?: 'test' | 'icon1' | 'icon2' | 'icon1112'
+    id?: number
     text: string
 }
 
