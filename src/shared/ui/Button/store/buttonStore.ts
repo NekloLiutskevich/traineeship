@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable} from 'mobx'
 
 export class ButtonStore {
     private _title = ''
@@ -8,7 +8,6 @@ export class ButtonStore {
     }
 
     get title() {
-        fsdfsdf
         return this._title + ' Test'
     }
 
