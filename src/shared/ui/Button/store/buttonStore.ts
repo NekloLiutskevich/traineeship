@@ -7,7 +7,7 @@ export class ButtonStore {
         makeAutoObservable(this)
     }
 
-    get title() {
+    get title() {asdasd
         return this._title + ' Test'
     }
 
