@@ -1,5 +1,6 @@
 import { FC, useMemo, useEffect, MouseEvent } from 'react'
 import {ButtonStore} from "shared/ui/Button/store/buttonStore";
+import styles from './styles.module.scss'
 
 
 type IButtonProps = {
@@ -18,5 +19,5 @@ export const Button: FC<IButtonProps> = ({ text, id }) => {
         console.log(e);
     }
 
-    return <div onMouseDown={onMouseDown}>{store.title}</div>
+    return <div className={styles.wrap} onMouseDown={onMouseDown}>{store.title}</div>
 }
