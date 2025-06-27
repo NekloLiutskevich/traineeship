@@ -1,4 +1,5 @@
 import React from 'react'
+import Car from './cars'
 
 export const App: React.FC = () => {
   type TypeUser = {
@@ -50,12 +51,42 @@ export const App: React.FC = () => {
     return { name }
   }
 
+  function getSm(name: string): string
+  function getSm(name: string, price?: number, brand?: string): string
+  function getSm(name: string, price?: number, brand?: string): string {
+    return price && brand ? `Name:${name} / Price: ${price} / Brand: ${brand}` : `Name:${name}`
+  }
+
+  const suzuki = new Car('Suzuki', 4, 20000, 5).getDetails
+
+  enum EnumColors {
+    black,
+    white,
+    red,
+    green,
+    blue,
+  }
+
+  const input = document.querySelector('input')
+  const value1 = input?.value
+  // const value2 = (input as HTMLInputElement).value
+
   return (
     <div>
       {arrayFilter.map((item, index) => (
         <span key={index}>{item}</span>
       ))}
-      <div className='test'>test</div>
+      <div className='test'>{getSm('car1')}</div>
+      <div>{getSm('car2', 10, 'dddd')}</div>
+      <div>{getSm('car2', 10)}</div>
+      <br />
+      {suzuki.split('\n').map((line, idx) => (
+        <div key={idx}>
+          {line} + {EnumColors[idx]}
+        </div>
+      ))}
+
+      <input type='text' />
     </div>
   )
 }
