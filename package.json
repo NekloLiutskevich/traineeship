@@ -9,6 +9,7 @@
     "sass": "^1.89.2"
   },
   "scripts": {
+    "postinstall": "husky",
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production"
   },

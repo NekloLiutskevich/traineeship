@@ -1,7 +1,9 @@
-import React, {FC, type MouseEvent, useEffect, useMemo} from "react";
+import React, { FC } from 'react'
 
-export const App: FC = () => {
-    return (
-        <h1>Hello, Reacddddddt!</h1>
-    )
+export const App: React.FC = () => {
+  return (
+    <div>
+      <div>test</div>
+    </div>
+  )
 }
