@@ -1,0 +1,13 @@
+@use '/src/app/styles/variables' as *;
+
+.messages {
+  position: fixed;
+  top: 40px;
+  left: 0;
+  right: 0;
+  text-align: center;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    top: 60px;
+  }
+}

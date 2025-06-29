@@ -12,6 +12,16 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      shared: path.resolve(__dirname, 'src/shared'),
+      app: path.resolve(__dirname, 'src/app'),
+      pages: path.resolve(__dirname, 'src/pages'),
+      widgets: path.resolve(__dirname, 'src/widgets'),
+      features: path.resolve(__dirname, 'src/features'),
+      entities: path.resolve(__dirname, 'src/entities'),
+      icons: path.resolve(__dirname, 'src/shared/assets/icons'),
+      sounds: path.resolve(__dirname, 'src/shared/assets/sounds'),
+    },
   },
   module: {
     rules: [
@@ -34,6 +44,21 @@ module.exports = {
           },
           'sass-loader',
         ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        exclude: /\.module\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.svg$/,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack', 'url-loader'],
+      },
+      {
+        test: /\.svg$/,
+        issuer: /\.(css|scss)$/,
+        type: 'asset/resource',
       },
     ],
   },

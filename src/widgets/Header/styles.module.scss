@@ -1,0 +1,41 @@
+@use '/src/app/styles/variables' as *;
+
+.header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: $bgColorMain_2;
+  color: $textColorMain_2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLogo {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.headerInfo {
+  font-size: 0.75rem;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    font-size: 1rem;
+  }
+}
+
+.headerAuth {
+}

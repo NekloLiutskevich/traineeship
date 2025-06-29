@@ -1,9 +1,13 @@
 import { createContext, useContext } from 'react'
-import type { AuthStore } from './authStore'
+import { authStore } from './authStore'
+import { messagesStore } from '../ui/Messages/store/messagesStore'
 
-type Stores = {
-  authStore: AuthStore
+export const stores = {
+  authStore,
+  messagesStore,
 }
 
-export const StoresContext = createContext<Stores>({} as Stores)
+export type Stores = typeof stores
+
+export const StoresContext = createContext<Stores>(stores)
 export const useStore = () => useContext(StoresContext)
