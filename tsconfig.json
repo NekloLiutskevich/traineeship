@@ -33,5 +33,5 @@
       "sounds/*": ["shared/assets/sounds/*"]
     }
   },
-  "include": ["src", "types"]
+  "include": ["src", "src/app/types"]
 }
