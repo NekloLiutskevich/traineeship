@@ -1,0 +1,67 @@
+@use 'variables' as *;
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  background: $bgColorMain;
+  color: $textColorMain;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+main {
+  display: flex;
+  row-gap: 20px;
+  padding-top: 60px;
+  padding-bottom: 40px;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+}
+
+.aside {
+  @media screen and (min-width: $breakpoint-lg) {
+    max-width: 30%;
+
+    + .content {
+      max-width: 70%;
+    }
+  }
+}
+
+.content {
+}
+
+.section {
+  background: $bgColorSection;
+  border: 1px solid $borderColorSection;
+  border-radius: 10px;
+  padding: 20px;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    padding: 40px;
+  }
+}
+
+.mb-2 {
+  margin-bottom: 20px;
+}
