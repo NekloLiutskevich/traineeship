@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { useStore } from 'shared/stores'
+// import { messagesStore } from 'shared/ui/Messages/store/messagesStore'
 import styles from './styles.module.scss'
 
 export const RegisterPage: React.FC = () => {
-  const { authStore } = useStore()
+  const { authStore, messagesStore } = useStore()
+  const navigate = useNavigate()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('k.liutskevich@gmail.com')
+  const [password, setPassword] = useState('123456')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const result = await authStore.register(email, password)
 
-    // debugger
+    messagesStore.updateMessage(result.type, result.message)
+
+    if (result.type === 'success') {
+      navigate('/dashboard', { replace: true })
+    }
   }
 
   return (
@@ -28,6 +35,7 @@ export const RegisterPage: React.FC = () => {
             id='login-email'
             placeholder='email@sample.com'
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -39,6 +47,7 @@ export const RegisterPage: React.FC = () => {
             id='login-password'
             placeholder=''
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -50,6 +59,7 @@ export const RegisterPage: React.FC = () => {
             id='login-password'
             placeholder=''
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>

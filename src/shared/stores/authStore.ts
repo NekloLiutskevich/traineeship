@@ -9,8 +9,15 @@ import {
   type UserCredential,
   type User,
 } from 'firebase/auth'
+import type { TypeMessages } from 'shared/ui/Messages/store/messagesStore'
 import { firebaseConfig } from '../lib/firebase/config'
 import { parseError } from '../helpers/parseError'
+
+type TypeResponse = {
+  type: TypeMessages
+  message: string
+  credentials?: UserCredential
+}
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
@@ -37,31 +44,49 @@ export class AuthStore {
     })
   }
 
-  async login(email: string, password: string): Promise<UserCredential | null> {
+  async login(email: string, password: string): Promise<TypeResponse> {
     try {
       this.loading = true
       const result = await signInWithEmailAndPassword(auth, email, password)
       this.user = result.user
       this.error = null
-      return result
+
+      return {
+        type: 'success',
+        message: '',
+        credentials: result,
+      }
     } catch (error: unknown) {
       this.error = parseError(error)
-      return null
+
+      return {
+        type: 'error',
+        message: this.error,
+      }
     } finally {
       this.loading = false
     }
   }
 
-  async register(email: string, password: string): Promise<UserCredential | null> {
+  async register(email: string, password: string): Promise<TypeResponse> {
     try {
       this.loading = true
       const result = await createUserWithEmailAndPassword(auth, email, password)
       this.user = result.user
       this.error = null
-      return result
+
+      return {
+        type: 'success',
+        message: '',
+        credentials: result,
+      }
     } catch (error: unknown) {
       this.error = parseError(error)
-      return null
+
+      return {
+        type: 'error',
+        message: this.error,
+      }
     } finally {
       this.loading = false
     }

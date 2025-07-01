@@ -1,9 +1,10 @@
 import { makeAutoObservable } from 'mobx'
+import type { UserCredential } from 'firebase/auth'
 
-type TypeMessages = 'success' | 'error' | 'warning'
+export type TypeMessages = 'success' | 'error' | 'warning'
 
 export class MessagesStore {
-  private _message = ''
+  private _message: string | UserCredential = ''
   private _type: TypeMessages | '' = ''
   visible: boolean
 
@@ -12,11 +13,11 @@ export class MessagesStore {
     makeAutoObservable(this)
   }
 
-  updateMessage(type: TypeMessages, message: string): void {
+  updateMessage(type: TypeMessages, message: string | UserCredential): void {
     this._type = type
     this._message = message
     this.visible = true
-    // this.clearMessage()
+    this.clearMessage()
   }
 
   clearMessage() {
@@ -24,15 +25,15 @@ export class MessagesStore {
       this._type = ''
       this._message = ''
       this.visible = false
-    }, 3000)
+    }, 5000)
   }
 
   get type() {
     return this._type
   }
 
-  get message() {
-    return this._message
+  get message(): string {
+    return <string>this._message
   }
 }
 
