@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { initializeApp } from 'firebase/app'
 import {
   getAuth,
@@ -34,22 +34,25 @@ export class AuthStore {
 
   private observeAuthState() {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.user = user
-      } else {
-        this.user = null
-      }
-
-      this.loading = false
+      runInAction(() => {
+        this.user = user ?? null
+        this.loading = false
+      })
     })
   }
 
   async login(email: string, password: string): Promise<TypeResponse> {
     try {
-      this.loading = true
+      runInAction(() => {
+        this.loading = true
+      })
+
       const result = await signInWithEmailAndPassword(auth, email, password)
-      this.user = result.user
-      this.error = null
+
+      runInAction(() => {
+        this.user = result.user
+        this.error = null
+      })
 
       return {
         type: 'success',
@@ -57,23 +60,35 @@ export class AuthStore {
         credentials: result,
       }
     } catch (error: unknown) {
-      this.error = parseError(error)
+      const parsedError = parseError(error)
+
+      runInAction(() => {
+        this.error = parsedError
+      })
 
       return {
         type: 'error',
-        message: this.error,
+        message: parsedError,
       }
     } finally {
-      this.loading = false
+      runInAction(() => {
+        this.loading = false
+      })
     }
   }
 
   async register(email: string, password: string): Promise<TypeResponse> {
     try {
-      this.loading = true
+      runInAction(() => {
+        this.loading = true
+      })
+
       const result = await createUserWithEmailAndPassword(auth, email, password)
-      this.user = result.user
-      this.error = null
+
+      runInAction(() => {
+        this.user = result.user
+        this.error = null
+      })
 
       return {
         type: 'success',
@@ -81,23 +96,34 @@ export class AuthStore {
         credentials: result,
       }
     } catch (error: unknown) {
-      this.error = parseError(error)
+      const parsedError = parseError(error)
+
+      runInAction(() => {
+        this.error = parsedError
+      })
 
       return {
         type: 'error',
-        message: this.error,
+        message: parsedError,
       }
     } finally {
-      this.loading = false
+      runInAction(() => {
+        this.loading = false
+      })
     }
   }
 
   async logout() {
     try {
       await signOut(auth)
-      this.user = null
+
+      runInAction(() => {
+        this.user = null
+      })
     } catch (error: unknown) {
-      this.error = parseError(error)
+      runInAction(() => {
+        this.error = parseError(error)
+      })
     }
   }
 }
