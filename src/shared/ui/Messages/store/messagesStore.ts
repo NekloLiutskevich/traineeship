@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import type { UserCredential } from 'firebase/auth'
 
 export type TypeMessages = 'success' | 'error' | 'warning'
@@ -13,7 +13,7 @@ export class MessagesStore {
     makeAutoObservable(this)
   }
 
-  updateMessage(type: TypeMessages, message: string | UserCredential): void {
+  updateMessage(type: TypeMessages, message: string): void {
     this._type = type
     this._message = message
     this.visible = true
@@ -22,9 +22,11 @@ export class MessagesStore {
 
   clearMessage() {
     setTimeout(() => {
-      this._type = ''
-      this._message = ''
-      this.visible = false
+      runInAction(() => {
+        this._type = ''
+        this._message = ''
+        this.visible = false
+      })
     }, 5000)
   }
 
