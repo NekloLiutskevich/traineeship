@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useStore } from 'shared/stores'
+import { authStore } from 'entities/Auth'
+import { usersStore } from 'entities/Users'
 import styles from './styles.module.scss'
 
-export const LoginPage: React.FC = () => {
-  const { authStore, messagesStore } = useStore()
+export const LoginPage = observer(() => {
+  const { messagesStore } = useStore()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
@@ -22,7 +25,7 @@ export const LoginPage: React.FC = () => {
     }
   }
 
-  if (authStore.user) {
+  if (usersStore.user) {
     return <Navigate to='/dashboard' replace />
   }
 
@@ -66,4 +69,4 @@ export const LoginPage: React.FC = () => {
       </div>
     </div>
   )
-}
+})

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { useStore } from 'shared/stores'
+import { authStore } from 'entities/Auth'
 // import { messagesStore } from 'shared/ui/Messages/store/messagesStore'
 import styles from './styles.module.scss'
 
 export const RegisterPage: React.FC = () => {
-  const { authStore, messagesStore } = useStore()
+  const { messagesStore } = useStore()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('k.liutskevich@gmail.com')
