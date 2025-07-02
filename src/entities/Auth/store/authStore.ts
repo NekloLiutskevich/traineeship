@@ -1,29 +1,18 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import { initializeApp } from 'firebase/app'
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-  type UserCredential,
-  type User,
-} from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 import type { TypeMessages } from 'shared/ui/Messages/store/messagesStore'
-import { firebaseConfig } from '../lib/firebase/config'
-import { parseError } from '../helpers/parseError'
+import { parseError } from 'shared/helpers/parseError'
+import { AuthApi, authFirebase } from 'entities/Auth/api/auth'
+import { type IUserCredentialResponse } from 'entities/Auth/api/types'
+import { usersStore } from 'entities/Users'
 
 type TypeResponse = {
   type: TypeMessages
   message: string
-  credentials?: UserCredential
+  credentials?: IUserCredentialResponse
 }
 
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
-
-export class AuthStore {
-  user: User | null = null
+class AuthStore {
   loading = true
   error: string | null = null
 
@@ -33,9 +22,9 @@ export class AuthStore {
   }
 
   private observeAuthState() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authFirebase, (user) => {
       runInAction(() => {
-        this.user = user ?? null
+        if (user) usersStore.addItem(user)
         this.loading = false
       })
     })
@@ -47,10 +36,13 @@ export class AuthStore {
         this.loading = true
       })
 
-      const result = await signInWithEmailAndPassword(auth, email, password)
+      const result = await AuthApi.login({
+        email: email,
+        password: password,
+      })
 
       runInAction(() => {
-        this.user = result.user
+        if (result.user) usersStore.addItem(result.user)
         this.error = null
       })
 
@@ -83,10 +75,13 @@ export class AuthStore {
         this.loading = true
       })
 
-      const result = await createUserWithEmailAndPassword(auth, email, password)
+      const result = await AuthApi.register({
+        email: email,
+        password: password,
+      })
 
       runInAction(() => {
-        this.user = result.user
+        if (result.user) usersStore.addItem(result.user)
         this.error = null
       })
 
@@ -115,10 +110,10 @@ export class AuthStore {
 
   async logout() {
     try {
-      await signOut(auth)
+      await AuthApi.logout()
 
       runInAction(() => {
-        this.user = null
+        usersStore.clearItems()
       })
     } catch (error: unknown) {
       runInAction(() => {
