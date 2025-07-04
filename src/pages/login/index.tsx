@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Button } from 'shared/ui'
 import { useStore } from 'shared/stores'
 import { authStore } from 'entities/Auth'
 import { usersStore } from 'entities/Users'
@@ -59,9 +60,9 @@ export const LoginPage = observer(() => {
         </div>
 
         <div className={classNames(styles.formFooter)}>
-          <button type='submit' aria-label='Log In'>
+          <Button type='submit' aria-label='Log In'>
             Log In
-          </button>
+          </Button>
         </div>
       </form>
       <div style={{ textAlign: 'center' }}>

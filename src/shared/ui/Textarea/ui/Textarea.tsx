@@ -2,19 +2,17 @@ import React, { type FC } from 'react'
 import classNames from 'classnames'
 import styles from './styles.module.scss'
 
-type IButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type ITextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   theme?: 'default'
 }
 
-export const Button: FC<IButtonProps> = ({ children, ...props }) => {
+export const Textarea: FC<ITextareaProps> = ({ ...props }) => {
   return (
-    <button
+    <textarea
       {...props}
       className={classNames({
         [styles.default]: !props.theme || props.theme === 'default',
       })}
-    >
-      {children}
-    </button>
+    />
   )
 }

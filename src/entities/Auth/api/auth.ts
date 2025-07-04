@@ -12,7 +12,7 @@ import {
   type IUserCredentialResponse,
 } from 'entities/Auth/api/types'
 
-const app = initializeApp(firebaseConfig)
+export const app = initializeApp(firebaseConfig)
 export const authFirebase = getAuth(app)
 
 class Api {

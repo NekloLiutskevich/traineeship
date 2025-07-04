@@ -1,0 +1,17 @@
+@use '/src/app/styles/variables' as *;
+
+textarea {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 400;
+  min-height: 100px;
+  resize: none;
+}
+
+.default {
+  border: 1px solid $borderColorSection;
+}

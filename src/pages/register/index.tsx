@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { useStore } from 'shared/stores'
+import { Button } from 'shared/ui'
 import { authStore } from 'entities/Auth'
-// import { messagesStore } from 'shared/ui/Messages/store/messagesStore'
 import styles from './styles.module.scss'
 
 export const RegisterPage: React.FC = () => {
@@ -66,7 +66,9 @@ export const RegisterPage: React.FC = () => {
         </div>
 
         <div className={classNames(styles.formFooter)}>
-          <button type='submit'>Sign Up</button>
+          <Button type='submit' aria-label='Sign Up'>
+            Sign Up
+          </Button>
         </div>
       </form>
       <div style={{ textAlign: 'center' }}>

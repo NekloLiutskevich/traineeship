@@ -2,12 +2,21 @@
 
 .messages {
   position: fixed;
-  top: 40px;
-  left: 0;
-  right: 0;
+  top: 50px;
+  left: 20px;
+  right: 20px;
   text-align: center;
+  z-index: 10000;
 
   @media screen and (min-width: $breakpoint-lg) {
     top: 60px;
+  }
+
+  &.error {
+    background: $error;
+  }
+
+  &.success {
+    background: $success;
   }
 }

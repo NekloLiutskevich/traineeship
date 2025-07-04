@@ -1,0 +1,21 @@
+@use '/src/app/styles/variables' as *;
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 100%;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sectionTasks {
+  align-self: flex-start;
+}
+
+.toDoItem {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

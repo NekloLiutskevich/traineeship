@@ -48,7 +48,7 @@ class AuthStore {
 
       return {
         type: 'success',
-        message: '',
+        message: 'Login successfully',
         credentials: result,
       }
     } catch (error: unknown) {
@@ -87,7 +87,7 @@ class AuthStore {
 
       return {
         type: 'success',
-        message: '',
+        message: 'Register successfully',
         credentials: result,
       }
     } catch (error: unknown) {

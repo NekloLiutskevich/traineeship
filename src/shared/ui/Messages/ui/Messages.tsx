@@ -9,7 +9,12 @@ export const Messages: React.FC = observer(() => {
   return (
     <>
       {messagesStore.visible && (
-        <div className={classNames(styles.messages)}>
+        <div
+          className={classNames(styles.messages, 'section', {
+            [styles.error]: messagesStore.type === 'error',
+            [styles.success]: messagesStore.type === 'success',
+          })}
+        >
           <div className='container'>{messagesStore.message}</div>
         </div>
       )}
