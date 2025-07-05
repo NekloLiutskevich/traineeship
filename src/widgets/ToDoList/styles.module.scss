@@ -15,7 +15,14 @@
   align-self: flex-start;
 }
 
-.toDoItem {
-  word-break: break-word;
-  overflow-wrap: break-word;
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 40vh;
+  overflow-y: auto;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    max-height: 60vh;
+  }
 }

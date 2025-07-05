@@ -11,6 +11,7 @@ export const Textarea: FC<ITextareaProps> = ({ ...props }) => {
     <textarea
       {...props}
       className={classNames({
+        [styles.textarea]: true,
         [styles.default]: !props.theme || props.theme === 'default',
       })}
     />
