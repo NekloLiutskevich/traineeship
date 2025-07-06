@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { Button } from 'shared/ui'
+import { Button, Input } from 'shared/ui'
 import { messagesStore } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
 import { usersStore } from 'entities/Users'
@@ -34,8 +34,8 @@ export const LoginPage = observer(() => {
       <h1 style={{ textAlign: 'center', margin: '0 0 40px' }}>Login</h1>
       <form className={classNames('section', 'mb-2')} onSubmit={handleSubmit}>
         <div className='mb-2'>
-          <label htmlFor='login-email'>Email:</label>
-          <input
+          <Input
+            label='Email:'
             tabIndex={0}
             type='email'
             id='login-email'
@@ -47,8 +47,8 @@ export const LoginPage = observer(() => {
         </div>
 
         <div className='mb-2'>
-          <label htmlFor='login-password'>Password:</label>
-          <input
+          <Input
+            label='Password:'
             type='password'
             id='login-password'
             placeholder=''

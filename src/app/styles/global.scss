@@ -37,19 +37,6 @@ main {
   }
 }
 
-.aside {
-  @media screen and (min-width: $breakpoint-lg) {
-    max-width: 30%;
-
-    + .content {
-      max-width: 70%;
-    }
-  }
-}
-
-.content {
-}
-
 .section {
   background: $bgColorSection;
   border: 1px solid $borderColorSection;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-import { Button } from 'shared/ui'
+import { Button, Input } from 'shared/ui'
 import { messagesStore } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
 import styles from './styles.module.scss'
@@ -35,11 +35,11 @@ export const RegisterPage: React.FC = () => {
       <h1 style={{ textAlign: 'center', margin: '0 0 40px' }}>Register</h1>
       <form className={classNames('section', 'mb-2')} onSubmit={handleSubmit}>
         <div className='mb-2'>
-          <label htmlFor='login-email'>Email:</label>
-          <input
+          <Input
+            label='Email:'
             tabIndex={0}
             type='email'
-            id='login-email'
+            id='register-email'
             placeholder='email@sample.com'
             value={email}
             required
@@ -48,10 +48,10 @@ export const RegisterPage: React.FC = () => {
         </div>
 
         <div className='mb-2'>
-          <label htmlFor='login-password'>Password:</label>
-          <input
+          <Input
+            label='Password:'
             type='password'
-            id='login-password'
+            id='register-password'
             placeholder=''
             value={password}
             required
@@ -60,10 +60,10 @@ export const RegisterPage: React.FC = () => {
         </div>
 
         <div className='mb-2'>
-          <label htmlFor='login-password-confirmation'>Confirm password:</label>
-          <input
+          <Input
+            label='Confirm password:'
             type='password'
-            id='login-password'
+            id='register-password-confirm'
             placeholder=''
             value={passwordConfirmation}
             required
