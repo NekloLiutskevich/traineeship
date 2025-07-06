@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-import { useStore } from 'shared/stores'
+import { Button, Input } from 'shared/ui'
+import { messagesStore } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
-// import { messagesStore } from 'shared/ui/Messages/store/messagesStore'
 import styles from './styles.module.scss'
 
 export const RegisterPage: React.FC = () => {
-  const { messagesStore } = useStore()
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState('k.liutskevich@gmail.com')
-  const [password, setPassword] = useState('123456')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (password !== passwordConfirmation) {
+      messagesStore.updateMessage('error', 'Passwords do not equal')
+      return
+    }
+
     const result = await authStore.register(email, password)
 
     messagesStore.updateMessage(result.type, result.message)
@@ -29,11 +35,11 @@ export const RegisterPage: React.FC = () => {
       <h1 style={{ textAlign: 'center', margin: '0 0 40px' }}>Register</h1>
       <form className={classNames('section', 'mb-2')} onSubmit={handleSubmit}>
         <div className='mb-2'>
-          <label htmlFor='login-email'>Email:</label>
-          <input
+          <Input
+            label='Email:'
             tabIndex={0}
             type='email'
-            id='login-email'
+            id='register-email'
             placeholder='email@sample.com'
             value={email}
             required
@@ -42,10 +48,10 @@ export const RegisterPage: React.FC = () => {
         </div>
 
         <div className='mb-2'>
-          <label htmlFor='login-password'>Password:</label>
-          <input
+          <Input
+            label='Password:'
             type='password'
-            id='login-password'
+            id='register-password'
             placeholder=''
             value={password}
             required
@@ -54,19 +60,21 @@ export const RegisterPage: React.FC = () => {
         </div>
 
         <div className='mb-2'>
-          <label htmlFor='login-password-confirmation'>Confirm password:</label>
-          <input
+          <Input
+            label='Confirm password:'
             type='password'
-            id='login-password'
+            id='register-password-confirm'
             placeholder=''
-            value={password}
+            value={passwordConfirmation}
             required
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
         </div>
 
         <div className={classNames(styles.formFooter)}>
-          <button type='submit'>Sign Up</button>
+          <Button type='submit' aria-label='Sign Up'>
+            Sign Up
+          </Button>
         </div>
       </form>
       <div style={{ textAlign: 'center' }}>

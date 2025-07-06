@@ -1,3 +1,33 @@
-//.wrap {
-//  color: red;
-//}
+@use '/src/app/styles/variables' as *;
+
+button {
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  min-height: 40px;
+  cursor: pointer;
+  transition: opacity 0.5s;
+  user-select: none;
+
+  &:hover {
+    opacity: 0.95;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    background-color: $disabled;
+    opacity: 0.5;
+  }
+}
+
+.default {
+  border: 1px solid $borderColorSection;
+  background-color: $bgColorMain_2;
+  color: $textColorMain_2;
+}

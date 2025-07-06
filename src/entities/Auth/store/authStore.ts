@@ -1,10 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { onAuthStateChanged } from 'firebase/auth'
-import type { TypeMessages } from 'shared/ui/Messages/store/messagesStore'
 import { parseError } from 'shared/helpers/parseError'
+import type { TypeMessages } from 'entities/Messages'
 import { AuthApi, authFirebase } from 'entities/Auth/api/auth'
 import { type IUserCredentialResponse } from 'entities/Auth/api/types'
 import { usersStore } from 'entities/Users'
+import { loaderStore } from 'entities/Loader'
 
 type TypeResponse = {
   type: TypeMessages
@@ -13,7 +14,7 @@ type TypeResponse = {
 }
 
 class AuthStore {
-  loading = true
+  isChecked = false
   error: string | null = null
 
   constructor() {
@@ -25,7 +26,8 @@ class AuthStore {
     onAuthStateChanged(authFirebase, (user) => {
       runInAction(() => {
         if (user) usersStore.addItem(user)
-        this.loading = false
+        this.isChecked = true
+        loaderStore.setLoading(false)
       })
     })
   }
@@ -33,7 +35,7 @@ class AuthStore {
   async login(email: string, password: string): Promise<TypeResponse> {
     try {
       runInAction(() => {
-        this.loading = true
+        loaderStore.setLoading(true)
       })
 
       const result = await AuthApi.login({
@@ -48,7 +50,7 @@ class AuthStore {
 
       return {
         type: 'success',
-        message: '',
+        message: 'Login successfully',
         credentials: result,
       }
     } catch (error: unknown) {
@@ -64,7 +66,7 @@ class AuthStore {
       }
     } finally {
       runInAction(() => {
-        this.loading = false
+        loaderStore.setLoading(false)
       })
     }
   }
@@ -72,7 +74,7 @@ class AuthStore {
   async register(email: string, password: string): Promise<TypeResponse> {
     try {
       runInAction(() => {
-        this.loading = true
+        loaderStore.setLoading(true)
       })
 
       const result = await AuthApi.register({
@@ -87,7 +89,7 @@ class AuthStore {
 
       return {
         type: 'success',
-        message: '',
+        message: 'Register successfully',
         credentials: result,
       }
     } catch (error: unknown) {
@@ -103,7 +105,7 @@ class AuthStore {
       }
     } finally {
       runInAction(() => {
-        this.loading = false
+        loaderStore.setLoading(false)
       })
     }
   }

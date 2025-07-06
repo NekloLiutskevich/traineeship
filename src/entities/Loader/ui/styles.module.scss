@@ -1,0 +1,32 @@
+@use '/src/app/styles/variables' as *;
+
+.loader {
+  position: fixed;
+  inset: 0;
+  background-color: $bgColorMain_2;
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  opacity: 94%;
+}
+
+.loaderActive {
+  display: flex;
+}
+
+.loaderIcon {
+  width: 20vw;
+  height: 20vw;
+  animation: spin 8s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

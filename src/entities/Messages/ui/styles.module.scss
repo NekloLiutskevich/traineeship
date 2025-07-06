@@ -1,0 +1,26 @@
+@use '/src/app/styles/variables' as *;
+
+.messages {
+  position: fixed;
+  top: 50px;
+  left: 20px;
+  right: 20px;
+  text-align: center;
+  z-index: 10000;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    top: 60px;
+  }
+
+  &.warning {
+    background: $warning;
+  }
+
+  &.error {
+    background: $error;
+  }
+
+  &.success {
+    background: $success;
+  }
+}

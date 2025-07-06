@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .headerLogo {
@@ -24,13 +25,17 @@
   color: inherit;
 
   @media screen and (min-width: $breakpoint-lg) {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 }
 
 .headerInfo {
   font-size: 0.75rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
 
   @media screen and (min-width: $breakpoint-lg) {
     font-size: 1rem;
@@ -38,4 +43,48 @@
 }
 
 .headerAuth {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    .headerDropdown {
+      display: block;
+    }
+  }
+
+  &Active {
+    cursor: pointer;
+  }
+
+  &Name {
+    display: none;
+    padding-left: 8px;
+    font-size: 0.75rem;
+
+    @media screen and (min-width: $breakpoint-lg) {
+      display: inline-block;
+    }
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: inherit;
+
+    @media screen and (min-width: $breakpoint-lg) {
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
+
+.headerDropdown {
+  position: absolute;
+  top: 100%;
+  display: none;
+  left: 0;
+  width: 100%;
+  min-width: 100px;
+  cursor: default;
 }

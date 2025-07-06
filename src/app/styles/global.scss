@@ -27,7 +27,6 @@ body {
 }
 
 main {
-  display: flex;
   row-gap: 20px;
   padding-top: 60px;
   padding-bottom: 40px;
@@ -36,19 +35,6 @@ main {
     padding-top: 100px;
     padding-bottom: 60px;
   }
-}
-
-.aside {
-  @media screen and (min-width: $breakpoint-lg) {
-    max-width: 30%;
-
-    + .content {
-      max-width: 70%;
-    }
-  }
-}
-
-.content {
 }
 
 .section {

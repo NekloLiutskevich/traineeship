@@ -1,0 +1,30 @@
+@use '/src/app/styles/variables' as *;
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 100%;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sectionTasks {
+  align-self: flex-start;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+  max-height: calc(100vh - 550px);
+  overflow-y: auto;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    max-height: calc(100vh - 400px);
+    min-height: 200px;
+  }
+}
