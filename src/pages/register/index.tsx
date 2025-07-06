@@ -11,9 +11,16 @@ export const RegisterPage: React.FC = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (password !== passwordConfirmation) {
+      messagesStore.updateMessage('error', 'Passwords do not equal')
+      return
+    }
+
     const result = await authStore.register(email, password)
 
     messagesStore.updateMessage(result.type, result.message)
@@ -58,9 +65,9 @@ export const RegisterPage: React.FC = () => {
             type='password'
             id='login-password'
             placeholder=''
-            value={password}
+            value={passwordConfirmation}
             required
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
         </div>
 
