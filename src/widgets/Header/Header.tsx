@@ -24,7 +24,7 @@ export const Header = observer(({ item }: IUserCard) => {
     <header className={classNames(styles.header)}>
       <div className={classNames(styles.headerInner, 'container')}>
         <Link to='/' className={styles.headerLogo} tabIndex={-1} aria-label='Home'>
-          <Icon icon={IconName.LogoIcon} />
+          <Icon icon={IconName.logoIcon} />
         </Link>
         <div className={classNames(styles.headerInfo)}>{date}</div>
         <div className={classNames(styles.headerAuth, { [styles.headerAuthActive]: item })}>

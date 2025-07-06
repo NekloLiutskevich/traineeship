@@ -1,15 +1,18 @@
 import React from 'react'
-import { ReactComponent as LogoIcon } from 'shared/assets/icons/logo.svg'
+import { ReactComponent as logoIcon } from 'shared/assets/icons/logo.svg'
 import { ReactComponent as userIcon } from 'shared/assets/icons/user.svg'
+import { ReactComponent as loadingIcon } from 'shared/assets/icons/loader.svg'
 
 export enum IconName {
-  LogoIcon,
+  logoIcon,
   userIcon,
+  loadingIcon,
 }
 
 const iconsMap: Record<IconName, React.FC<React.SVGProps<SVGSVGElement>>> = {
-  [IconName.LogoIcon]: LogoIcon,
+  [IconName.logoIcon]: logoIcon,
   [IconName.userIcon]: userIcon,
+  [IconName.loadingIcon]: loadingIcon,
 }
 
 type IconProps = {
