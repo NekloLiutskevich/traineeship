@@ -1,4 +1,4 @@
-import { getDatabase, ref, push, get, set, onValue, update } from 'firebase/database'
+import { getDatabase, ref, push, set, onValue, update, remove } from 'firebase/database'
 import { app } from 'entities/Auth/api/auth'
 import { type IParamsDb } from 'entities/ToDo/api/types'
 import { firebaseDbConfig } from './config'
@@ -6,10 +6,10 @@ import { firebaseDbConfig } from './config'
 const db = getDatabase(app, firebaseDbConfig.databaseURL)
 
 class Api {
-  async getTodos(uid: string, callback: (data: Record<string, IParamsDb>) => void) {
+  getTodos(uid: string, callback: (data: Record<string, IParamsDb>) => void) {
     const todosRef = ref(db, `users/${uid}/todos`)
 
-    onValue(todosRef, (snapshot) => {
+    return onValue(todosRef, (snapshot) => {
       const data = snapshot.val() || {}
       callback(data)
     })
@@ -26,10 +26,11 @@ class Api {
         createdAt: Date.now(),
       })
 
-      // await this.getTodos(uid)
       console.log('✅ Задача добавлена')
+      return newTodoRef.key || undefined
     } catch (error) {
       console.error('❌ Ошибка при записи задачи:', error)
+      return undefined
     }
   }
 
@@ -37,6 +38,17 @@ class Api {
     const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
 
     await update(todoRef, updates)
+  }
+
+  async removeTodo(uid: string, todoId: string) {
+    const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
+
+    try {
+      await remove(todoRef)
+      console.log('🗑️ Задача удалена')
+    } catch (error) {
+      console.error('❌ Ошибка при удалении задачи:', error)
+    }
   }
 }
 

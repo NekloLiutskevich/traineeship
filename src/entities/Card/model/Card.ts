@@ -23,7 +23,7 @@ export class Card {
     makeAutoObservable(this)
   }
 
-  toggleEditMode() {
-    this.edit = !this.edit
+  setEditMode(value: boolean) {
+    this.edit = value
   }
 }

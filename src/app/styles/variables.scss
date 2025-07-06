@@ -1,7 +1,9 @@
 // colors
 $error: #fc9c9c;
 $success: #a4e8a4;
+$disabled: #929ca5;
 $cardDefault: #fffad1;
+$cardCompleted: #cbf4cb;
 
 // blocks
 $bgColorMain: #f0f0f0;
@@ -15,5 +17,6 @@ $textColorSection: #333333;
 $borderColorSection: #929ca5;
 
 // breakpoints
+$breakpoint-xs: 640px;
 $breakpoint-sm: 768px;
 $breakpoint-lg: 1024px;

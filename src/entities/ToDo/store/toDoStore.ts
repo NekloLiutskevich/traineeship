@@ -1,16 +1,13 @@
 import { makeAutoObservable, runInAction, reaction } from 'mobx'
-import { getDatabase, ref, push, set, onValue } from 'firebase/database'
 import { type IParamsDb } from 'entities/ToDo/api/types'
 import { ToDoApi } from 'entities/ToDo/api/todo'
 import { usersStore } from 'entities/Users'
-import { app } from 'entities/Auth/api/auth'
 import { Card } from 'entities/Card/model/Card'
-import { firebaseDbConfig } from '../api/config'
-
-const db = getDatabase(app, firebaseDbConfig.databaseURL)
 
 class ToDoStore {
   private _tasksMap = new Map<string, Card>()
+  private _userId: string | undefined
+  private _unsubscribe?: () => void
 
   constructor() {
     makeAutoObservable(this)
@@ -19,36 +16,67 @@ class ToDoStore {
       () => usersStore.user,
       (user) => {
         if (user) {
-          this.subscribeToTodos(user.id)
+          this._unsubscribe?.()
+
+          this._unsubscribe = ToDoApi.getTodos(user.id, (result) => {
+            runInAction(() => {
+              this.initTasks(result)
+            })
+          })
+
+          this._userId = user.id
+          this.subscribeToTodos(this._userId)
         }
       }
     )
   }
 
-  async subscribeToTodos(id: string): Promise<void> {
-    return await ToDoApi.getTodos(id, (result) => {
-      runInAction(() => {
-        this.clearTasks()
+  private initTasks = (response: Record<string, IParamsDb>) => {
+    this.clearTasks()
 
-        for (const [todoId, todo] of Object.entries(result)) {
-          const card = new Card({
-            id: todoId,
-            ...todo,
-          })
-          this._tasksMap.set(todoId, card)
-        }
+    for (const [todoId, todo] of Object.entries(response)) {
+      this._tasksMap.set(
+        todoId,
+        new Card({
+          id: todoId,
+          ...todo,
+        })
+      )
+    }
+  }
+
+  private addLastUpdatedTime(params: object): object {
+    return Object.assign(params, { updatedAt: Date.now() })
+  }
+
+  subscribeToTodos(id: string): () => void {
+    return ToDoApi.getTodos(id, (result) => {
+      runInAction(() => {
+        this.initTasks(result)
       })
     })
   }
 
-  async saveToDoToDb(id: string, task: string) {
-    return ToDoApi.addTodo(id, task)
+  async saveToDoToDb(task: string) {
+    if (!this._userId) return
+
+    return ToDoApi.addTodo(this._userId, task)
   }
 
-  async getTodosFromDb() {}
+  async updateToDoToDb(taskId: string, params: Partial<IParamsDb>) {
+    if (!this._userId) return
+
+    return ToDoApi.updateTodo(this._userId, taskId, this.addLastUpdatedTime(params))
+  }
+
+  async removeToDoFromDb(taskId: string) {
+    if (!this._userId) return
+
+    return ToDoApi.removeTodo(this._userId, taskId)
+  }
 
   get getTasks() {
-    return Array.from(this._tasksMap.values())
+    return Array.from(this._tasksMap.values()).reverse()
   }
 
   clearTasks = () => {

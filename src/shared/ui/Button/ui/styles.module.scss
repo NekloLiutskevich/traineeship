@@ -13,9 +13,16 @@ button {
   min-height: 40px;
   cursor: pointer;
   transition: opacity 0.5s;
+  user-select: none;
 
   &:hover {
     opacity: 0.95;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    background-color: $disabled;
+    opacity: 0.5;
   }
 }
 

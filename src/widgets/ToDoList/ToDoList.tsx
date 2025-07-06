@@ -1,28 +1,21 @@
 import React, { type ChangeEvent, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
-import { useStore } from 'shared/stores'
+// import { useStore } from 'shared/stores'
 import { Button, Textarea } from 'shared/ui'
 import { toDoStore } from 'entities/ToDo'
-import type { User } from 'entities/Users/model/User'
 import { CardItem } from 'entities/Card/ui/card'
 import styles from './styles.module.scss'
 
-type IUserCard = {
-  user: User
-}
-
-export const ToDoList = observer(({ user }: IUserCard) => {
-  const { messagesStore } = useStore()
+export const ToDoList = observer(() => {
+  // const { messagesStore } = useStore()
   const [task, setTask] = useState('')
   const toDoList = toDoStore.getTasks
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await toDoStore.saveToDoToDb(user.id, task)
+    await toDoStore.saveToDoToDb(task)
     setTask('')
-    // await toDoStore.subscribeToTodos(user.id)
-    // message
   }
 
   return (
@@ -33,8 +26,8 @@ export const ToDoList = observer(({ user }: IUserCard) => {
           {!toDoList.length && ' Is empty'}
         </h2>
         <div className={classNames(styles.todoList)}>
-          {toDoList.map((card, index) => (
-            <CardItem key={index} card={card} />
+          {toDoList.map((card) => (
+            <CardItem key={card.id} card={card} />
           ))}
         </div>
       </div>

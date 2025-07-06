@@ -19,10 +19,12 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 40vh;
+  min-height: 120px;
+  max-height: calc(100vh - 550px);
   overflow-y: auto;
 
   @media screen and (min-width: $breakpoint-lg) {
-    max-height: 60vh;
+    max-height: calc(100vh - 400px);
+    min-height: 200px;
   }
 }
