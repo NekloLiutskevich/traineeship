@@ -1,14 +1,12 @@
 import React, { type ChangeEvent, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
-// import { useStore } from 'shared/stores'
 import { Button, Textarea } from 'shared/ui'
 import { toDoStore } from 'entities/ToDo'
 import { CardItem } from 'entities/Card/ui/card'
 import styles from './styles.module.scss'
 
 export const ToDoList = observer(() => {
-  // const { messagesStore } = useStore()
   const [task, setTask] = useState('')
   const toDoList = toDoStore.getTasks
 

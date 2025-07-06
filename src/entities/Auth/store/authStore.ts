@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { onAuthStateChanged } from 'firebase/auth'
-import type { TypeMessages } from 'shared/ui/Messages/store/messagesStore'
 import { parseError } from 'shared/helpers/parseError'
+import type { TypeMessages } from 'entities/Messages'
 import { AuthApi, authFirebase } from 'entities/Auth/api/auth'
 import { type IUserCredentialResponse } from 'entities/Auth/api/types'
 import { usersStore } from 'entities/Users'

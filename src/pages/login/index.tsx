@@ -3,13 +3,12 @@ import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { Button } from 'shared/ui'
-import { useStore } from 'shared/stores'
+import { messagesStore } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
 import { usersStore } from 'entities/Users'
 import styles from './styles.module.scss'
 
 export const LoginPage = observer(() => {
-  const { messagesStore } = useStore()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')

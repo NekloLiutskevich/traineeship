@@ -1,6 +1,7 @@
 import { getDatabase, ref, push, set, onValue, update, remove } from 'firebase/database'
 import { app } from 'entities/Auth/api/auth'
 import { type IParamsDb } from 'entities/ToDo/api/types'
+import { messagesStore } from 'entities/Messages'
 import { loaderStore } from 'entities/Loader'
 import { firebaseDbConfig } from './config'
 
@@ -33,9 +34,10 @@ class Api {
       })
 
       console.log('✅ Задача добавлена')
+      messagesStore.updateMessage('success', 'New task has been added')
       return newTodoRef.key || undefined
     } catch (error) {
-      console.error('❌ Ошибка при записи задачи:', error)
+      messagesStore.updateMessage('error', `Error: ${error}`)
       return undefined
     } finally {
       loaderStore.setLoading(false)
@@ -48,6 +50,7 @@ class Api {
     loaderStore.setLoading(true)
     await update(todoRef, updates)
     loaderStore.setLoading(false)
+    messagesStore.updateMessage('success', 'The task has been updated')
   }
 
   async removeTodo(uid: string, todoId: string) {
@@ -58,8 +61,9 @@ class Api {
     try {
       await remove(todoRef)
       console.log('🗑️ Задача удалена')
+      messagesStore.updateMessage('success', 'The task has been removed')
     } catch (error) {
-      console.error('❌ Ошибка при удалении задачи:', error)
+      messagesStore.updateMessage('error', `Error: ${error}`)
     } finally {
       loaderStore.setLoading(false)
     }

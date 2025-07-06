@@ -12,6 +12,10 @@
     top: 60px;
   }
 
+  &.warning {
+    background: $warning;
+  }
+
   &.error {
     background: $error;
   }

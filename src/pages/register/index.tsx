@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-import { useStore } from 'shared/stores'
 import { Button } from 'shared/ui'
+import { messagesStore } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
 import styles from './styles.module.scss'
 
 export const RegisterPage: React.FC = () => {
-  const { messagesStore } = useStore()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')

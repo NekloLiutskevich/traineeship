@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Outlet } from 'react-router-dom'
-import { Messages } from 'shared/ui'
+import { Messages } from 'entities/Messages'
 import { authStore } from 'entities/Auth'
 import { usersStore } from 'entities/Users'
 import { Loader } from 'entities/Loader'
