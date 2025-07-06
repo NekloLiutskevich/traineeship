@@ -8,7 +8,6 @@ import React from 'react'
 import { LoginPage } from 'pages/login'
 import { RegisterPage } from 'pages/register'
 import { DashboardPage } from 'pages/dashboard'
-import { StatisticPage } from 'pages/statistic'
 import { Layout } from 'app/layouts/Layout'
 import { ProtectedRoute } from 'app/route/protectedRoute'
 
@@ -18,7 +17,6 @@ const routes = createRoutesFromElements(
     <Route path='/register' element={<RegisterPage />} />
     <Route element={<ProtectedRoute />}>
       <Route path='/dashboard' element={<DashboardPage />} />
-      <Route path='/statistic' element={<StatisticPage />} />
     </Route>
   </Route>
 )
