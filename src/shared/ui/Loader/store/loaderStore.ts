@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 
-class Loader {
+export class LoaderStore {
   private _loading = false
 
   constructor() {
@@ -15,5 +15,3 @@ class Loader {
     return this._loading
   }
 }
-
-export const loaderStore = new Loader()

@@ -3,26 +3,26 @@ import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Button, Textarea } from 'shared/ui'
 import { toDoStore } from 'entities/ToDo'
-import type { Card } from 'entities/Card/model/Card'
+import { type ToDo } from 'entities/ToDo/model/ToDo'
 import styles from './styles.module.scss'
 
-type CardProps = {
-  card: Card
+type IToDoCardProps = {
+  item: ToDo
 }
 
-export const CardItem = observer(({ card }: CardProps) => {
-  const [task, setTask] = useState(card.task)
+export const ToDoCard = observer(({ item }: IToDoCardProps) => {
+  const [task, setTask] = useState(item.task)
 
-  const createdDate = new Date(card.createdAt).toLocaleDateString()
-  const createdTime = new Date(card.createdAt).toLocaleTimeString()
-  const updatedDate = card.updatedAt ? new Date(card.updatedAt).toLocaleDateString() : null
-  const updatedTime = card.updatedAt ? new Date(card.updatedAt).toLocaleTimeString() : null
-  const initialTaskValue = card.task
+  const createdDate = new Date(item.createdAt).toLocaleDateString()
+  const createdTime = new Date(item.createdAt).toLocaleTimeString()
+  const updatedDate = item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : null
+  const updatedTime = item.updatedAt ? new Date(item.updatedAt).toLocaleTimeString() : null
+  const initialTaskValue = item.task
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleEditClick = () => {
-    card.setEditMode(true)
+    item.setEditMode(true)
     textareaRef.current?.focus()
 
     const textLength = textareaRef.current?.value.length || 0
@@ -30,10 +30,10 @@ export const CardItem = observer(({ card }: CardProps) => {
   }
 
   return (
-    <div className={classNames(styles.cardItem, { [styles.cardItemComplete]: card.completed })}>
+    <div className={classNames(styles.cardItem, { [styles.cardItemComplete]: item.completed })}>
       <div className={classNames(styles.cardInfo)}>
         <div className={classNames(styles.cardHeader)}>
-          Status: {card.completed ? 'Done' : 'In Progress'}
+          Status: {item.completed ? 'Done' : 'In Progress'}
         </div>
 
         <div className={classNames(styles.cardContentWrap)}>
@@ -41,9 +41,9 @@ export const CardItem = observer(({ card }: CardProps) => {
             ref={textareaRef}
             name='card-task'
             value={task}
-            readOnly={!card.edit}
+            readOnly={!item.edit}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setTask(e.target.value)}
-            onBlur={() => card.setEditMode(false)}
+            onBlur={() => item.setEditMode(false)}
           />
         </div>
 
@@ -52,7 +52,7 @@ export const CardItem = observer(({ card }: CardProps) => {
             <div>Created:</div>
             {createdDate} {createdTime}
           </div>
-          {card.updatedAt && (
+          {item.updatedAt && (
             <div>
               <div>Updated:</div>
               {updatedDate} {updatedTime}
@@ -67,7 +67,7 @@ export const CardItem = observer(({ card }: CardProps) => {
           onClick={() => {
             const confirmation = confirm('Are you sure you want to remove this task?')
 
-            if (confirmation) toDoStore.removeToDoFromDb(card.id)
+            if (confirmation) toDoStore.removeToDoFromDb(item.id)
           }}
         >
           Remove
@@ -78,7 +78,7 @@ export const CardItem = observer(({ card }: CardProps) => {
             type='button'
             aria-label='Edit'
             onClick={handleEditClick}
-            disabled={card.completed}
+            disabled={item.completed}
           >
             Edit
           </Button>
@@ -87,7 +87,7 @@ export const CardItem = observer(({ card }: CardProps) => {
             type='button'
             aria-label='Update'
             onClick={() => {
-              toDoStore.updateToDoToDb(card.id, {
+              toDoStore.updateToDoToDb(item.id, {
                 task: task,
               })
             }}
@@ -100,12 +100,12 @@ export const CardItem = observer(({ card }: CardProps) => {
           type='button'
           aria-label='Done'
           onClick={() => {
-            toDoStore.updateToDoToDb(card.id, {
-              completed: !card.completed,
+            toDoStore.updateToDoToDb(item.id, {
+              completed: !item.completed,
             })
           }}
         >
-          {!card.completed ? 'Done' : 'Start'}
+          {!item.completed ? 'Done' : 'Start'}
         </Button>
       </div>
     </div>

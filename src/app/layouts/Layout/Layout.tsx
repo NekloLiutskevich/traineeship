@@ -1,21 +1,18 @@
 import { observer } from 'mobx-react-lite'
 import { Outlet } from 'react-router-dom'
-import { Messages } from 'entities/Messages'
+import { Loader } from 'shared/ui/Loader'
+import { Messages } from 'shared/ui'
 import { authStore } from 'entities/Auth'
 import { usersStore } from 'entities/Users'
-import { Loader } from 'entities/Loader'
+
 import { Header } from 'widgets/Header'
 
 export const Layout = observer(() => {
-  if (!authStore.isChecked) {
-    return <Loader />
-  }
-
   return (
     <>
       <Header item={usersStore.user} />
       <Messages />
-      <Loader />
+      <Loader store={authStore.loaderStore} />
       <main className='container'>
         <Outlet />
       </main>

@@ -2,8 +2,8 @@ import React, { type ChangeEvent, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Button, Textarea } from 'shared/ui'
-import { toDoStore } from 'entities/ToDo'
-import { CardItem } from 'entities/Card/ui/card'
+import { Loader } from 'shared/ui/Loader'
+import { toDoStore, ToDoCard } from 'entities/ToDo'
 import styles from './styles.module.scss'
 
 export const ToDoList = observer(() => {
@@ -18,14 +18,15 @@ export const ToDoList = observer(() => {
 
   return (
     <div className={classNames(styles.wrap)}>
+      <Loader store={toDoStore.loaderStore} />
       <div className={classNames('section')}>
         <h2 style={{ textAlign: 'center', margin: '0 0 20px' }}>
           ToDo List
           {!toDoList.length && ' Is empty'}
         </h2>
         <div className={classNames(styles.todoList)}>
-          {toDoList.map((card) => (
-            <CardItem key={card.id} card={card} />
+          {toDoList.map((item) => (
+            <ToDoCard key={item.id} item={item} />
           ))}
         </div>
       </div>

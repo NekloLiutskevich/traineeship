@@ -1,22 +1,35 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from 'react-router-dom'
 import React from 'react'
-import { LoginPage } from 'pages/login'
-import { RegisterPage } from 'pages/register'
-import { DashboardPage } from 'pages/dashboard'
+import { RegisterRouter, RegisterRoutes } from 'pages/register'
+import { DashboardRouter, DashboardRoutes } from 'pages/dashboard'
+import { LoginRouter, LoginRoutes } from 'pages/login'
+
 import { Layout } from 'app/layouts/Layout'
-import { ProtectedRoute } from 'app/route/protectedRoute'
+import { LayoutAuth } from 'app/layouts/LayoutAuth/LayoutAuth'
+import { LayoutUnAuth } from 'app/layouts/LayoutUnAuth/LayoutUnAuth'
+import { LayoutRefresh } from 'app/layouts/LayoutRefresh/LayoutRefresh'
 
 const routes = createRoutesFromElements(
-  <Route element={<Layout />}>
-    <Route path='/' element={<LoginPage />} />
-    <Route path='/register' element={<RegisterPage />} />
-    <Route element={<ProtectedRoute />}>
-      <Route path='/dashboard' element={<DashboardPage />} />
+  <Route element={<LayoutRefresh />}>
+    <Route path={'/*'} element={<Navigate to={`/${LoginRoutes.root}`} />} />
+
+    <Route element={<LayoutAuth />}>
+      <Route element={<Layout />}>
+        <Route path={`/${DashboardRoutes.root}/*`} element={<DashboardRouter />} />
+      </Route>
+    </Route>
+
+    <Route element={<LayoutUnAuth />}>
+      <Route element={<Layout />}>
+        <Route path={`/${LoginRoutes.root}/*`} element={<LoginRouter />} />
+        <Route path={`/${RegisterRoutes.root}/*`} element={<RegisterRouter />} />
+      </Route>
     </Route>
   </Route>
 )

@@ -1,13 +1,13 @@
-import { makeAutoObservable, runInAction, reaction } from 'mobx'
-import { type IParamsDb } from 'entities/ToDo/api/types'
+import { makeAutoObservable, reaction, runInAction } from 'mobx'
+import { LoaderStore } from 'shared/ui/Loader'
+import { type IParamsDb, type IResponseDb } from 'entities/ToDo/api/types'
 import { ToDoApi } from 'entities/ToDo/api/todo'
 import { usersStore } from 'entities/Users'
-import { Card } from 'entities/Card/model/Card'
+import { ToDo } from 'entities/ToDo/model/ToDo'
 
 class ToDoStore {
-  private _tasksMap = new Map<string, Card>()
-  private _userId: string | undefined
-  private _unsubscribe?: () => void
+  private _tasksMap: Map<string, ToDo> = new Map()
+  private _loaderStore = new LoaderStore()
 
   constructor() {
     makeAutoObservable(this)
@@ -16,28 +16,23 @@ class ToDoStore {
       () => usersStore.user,
       (user) => {
         if (user) {
-          this._unsubscribe?.()
-
-          this._unsubscribe = ToDoApi.getTodos(user.id, (result) => {
-            runInAction(() => {
-              this.initTasks(result)
-            })
-          })
-
-          this._userId = user.id
-          this.subscribeToTodos(this._userId)
+          this.subscribeToTodos()
         }
       }
     )
   }
 
-  private initTasks = (response: Record<string, IParamsDb>) => {
+  get loaderStore() {
+    return this._loaderStore
+  }
+
+  private initTasks = (response: Record<string, IResponseDb>) => {
     this.clearTasks()
 
     for (const [todoId, todo] of Object.entries(response)) {
       this._tasksMap.set(
         todoId,
-        new Card({
+        new ToDo({
           id: todoId,
           ...todo,
         })
@@ -49,30 +44,35 @@ class ToDoStore {
     return Object.assign(params, { updatedAt: Date.now() })
   }
 
-  subscribeToTodos(id: string): () => void {
-    return ToDoApi.getTodos(id, (result) => {
+  subscribeToTodos = () => {
+    if (!usersStore.user) return
+
+    this._loaderStore.setLoading(true)
+
+    return ToDoApi.getTodos(usersStore.user.id, (result) => {
       runInAction(() => {
         this.initTasks(result)
+        this._loaderStore.setLoading(false)
       })
     })
   }
 
   async saveToDoToDb(task: string) {
-    if (!this._userId) return
+    if (!usersStore.user) return
 
-    return ToDoApi.addTodo(this._userId, task)
+    return ToDoApi.addTodo(usersStore.user.id, task)
   }
 
   async updateToDoToDb(taskId: string, params: Partial<IParamsDb>) {
-    if (!this._userId) return
+    if (!usersStore.user) return
 
-    return ToDoApi.updateTodo(this._userId, taskId, this.addLastUpdatedTime(params))
+    return ToDoApi.updateTodo(usersStore.user.id, taskId, this.addLastUpdatedTime(params))
   }
 
   async removeToDoFromDb(taskId: string) {
-    if (!this._userId) return
+    if (!usersStore.user) return
 
-    return ToDoApi.removeTodo(this._userId, taskId)
+    return ToDoApi.removeTodo(usersStore.user.id, taskId)
   }
 
   get getTasks() {

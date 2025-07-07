@@ -1,22 +1,18 @@
 import { getDatabase, ref, push, set, onValue, update, remove } from 'firebase/database'
+import { messagesStore } from 'shared/ui'
 import { app } from 'entities/Auth/api/auth'
-import { type IParamsDb } from 'entities/ToDo/api/types'
-import { messagesStore } from 'entities/Messages'
-import { loaderStore } from 'entities/Loader'
+import { type IParamsDb, type IResponseDb } from 'entities/ToDo/api/types'
+import { toDoStore } from 'entities/ToDo'
 import { firebaseDbConfig } from './config'
 
 const db = getDatabase(app, firebaseDbConfig.databaseURL)
 
 class Api {
-  getTodos(uid: string, callback: (data: Record<string, IParamsDb>) => void) {
+  getTodos(uid: string, callback: (data: Record<string, IResponseDb>) => void) {
     const todosRef = ref(db, `users/${uid}/todos`)
 
-    loaderStore.setLoading(true)
-
     return onValue(todosRef, (snapshot) => {
-      const data = snapshot.val() || {}
-      callback(data)
-      loaderStore.setLoading(false)
+      callback(snapshot.val() || {})
     })
   }
 
@@ -24,7 +20,7 @@ class Api {
     const todosRef = ref(db, `users/${uid}/todos`)
     const newTodoRef = push(todosRef)
 
-    loaderStore.setLoading(true)
+    toDoStore.loaderStore.setLoading(true)
 
     try {
       await set(newTodoRef, {
@@ -40,23 +36,23 @@ class Api {
       messagesStore.updateMessage('error', `Error: ${error}`)
       return undefined
     } finally {
-      loaderStore.setLoading(false)
+      toDoStore.loaderStore.setLoading(false)
     }
   }
 
   async updateTodo(uid: string, todoId: string, updates: Partial<IParamsDb>) {
     const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
 
-    loaderStore.setLoading(true)
+    toDoStore.loaderStore.setLoading(true)
     await update(todoRef, updates)
-    loaderStore.setLoading(false)
+    toDoStore.loaderStore.setLoading(false)
     messagesStore.updateMessage('success', 'The task has been updated')
   }
 
   async removeTodo(uid: string, todoId: string) {
     const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
 
-    loaderStore.setLoading(true)
+    toDoStore.loaderStore.setLoading(true)
 
     try {
       await remove(todoRef)
@@ -65,7 +61,7 @@ class Api {
     } catch (error) {
       messagesStore.updateMessage('error', `Error: ${error}`)
     } finally {
-      loaderStore.setLoading(false)
+      toDoStore.loaderStore.setLoading(false)
     }
   }
 }

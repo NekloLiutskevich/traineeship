@@ -17,7 +17,7 @@ class UsersStore {
     this._itemsMap.clear()
   }
 
-  get user() {
+  get user(): User | null {
     return this.items[0] || null
   }
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
-import { messagesStore } from 'entities/Messages/store/messagesStore'
+import { messagesStore } from 'shared/ui/Messages/store/messagesStore'
 import styles from './styles.module.scss'
 
-export const Messages: React.FC = observer(() => {
+export const Messages = observer(() => {
   return (
     <>
       {messagesStore.visible && (

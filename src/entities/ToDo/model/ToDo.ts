@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
+import { type IResponseDb } from 'entities/ToDo/api/types'
 
-export class Card {
+export class ToDo {
   id: string
   task: string
   completed: boolean
@@ -8,13 +9,7 @@ export class Card {
   updatedAt?: number
   edit = false
 
-  constructor(card: {
-    id: string
-    task: string
-    completed: boolean
-    createdAt: number
-    updatedAt?: number
-  }) {
+  constructor(card: IResponseDb & { id: string }) {
     this.id = card.id
     this.task = card.task
     this.completed = card.completed

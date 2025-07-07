@@ -1,14 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { onAuthStateChanged } from 'firebase/auth'
+import type { ITypeMessages } from 'shared/ui'
 import { parseError } from 'shared/helpers/parseError'
-import type { TypeMessages } from 'entities/Messages'
+import { LoaderStore } from 'shared/ui/Loader'
 import { AuthApi, authFirebase } from 'entities/Auth/api/auth'
 import { type IUserCredentialResponse } from 'entities/Auth/api/types'
 import { usersStore } from 'entities/Users'
-import { loaderStore } from 'entities/Loader'
 
 type TypeResponse = {
-  type: TypeMessages
+  type: ITypeMessages
   message: string
   credentials?: IUserCredentialResponse
 }
@@ -16,10 +16,15 @@ type TypeResponse = {
 class AuthStore {
   isChecked = false
   error: string | null = null
+  private _loaderStore = new LoaderStore()
 
   constructor() {
     makeAutoObservable(this)
     this.observeAuthState()
+  }
+
+  get loaderStore() {
+    return this._loaderStore
   }
 
   private observeAuthState() {
@@ -27,7 +32,7 @@ class AuthStore {
       runInAction(() => {
         if (user) usersStore.addItem(user)
         this.isChecked = true
-        loaderStore.setLoading(false)
+        this._loaderStore.setLoading(false)
       })
     })
   }
@@ -35,7 +40,7 @@ class AuthStore {
   async login(email: string, password: string): Promise<TypeResponse> {
     try {
       runInAction(() => {
-        loaderStore.setLoading(true)
+        this._loaderStore.setLoading(true)
       })
 
       const result = await AuthApi.login({
@@ -66,7 +71,7 @@ class AuthStore {
       }
     } finally {
       runInAction(() => {
-        loaderStore.setLoading(false)
+        this._loaderStore.setLoading(false)
       })
     }
   }
@@ -74,7 +79,7 @@ class AuthStore {
   async register(email: string, password: string): Promise<TypeResponse> {
     try {
       runInAction(() => {
-        loaderStore.setLoading(true)
+        this._loaderStore.setLoading(true)
       })
 
       const result = await AuthApi.register({
@@ -105,7 +110,7 @@ class AuthStore {
       }
     } finally {
       runInAction(() => {
-        loaderStore.setLoading(false)
+        this._loaderStore.setLoading(false)
       })
     }
   }

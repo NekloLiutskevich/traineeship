@@ -2,14 +2,13 @@ import { observer } from 'mobx-react-lite'
 import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { Icon, IconName } from 'shared/ui/Icon'
-import { Button } from 'shared/ui'
-import { messagesStore } from 'entities/Messages'
+import { Button, messagesStore } from 'shared/ui'
 import { authStore } from 'entities/Auth'
 import { type User } from 'entities/Users/model/User'
 import styles from './styles.module.scss'
 
 type IUserCard = {
-  item: User
+  item: User | null
 }
 
 export const Header = observer(({ item }: IUserCard) => {
