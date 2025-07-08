@@ -1,7 +1,7 @@
 import React, { type ChangeEvent, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
-import { Button, Textarea } from 'shared/ui'
+import { Button, Textarea, messagesStore } from 'shared/ui'
 import { Loader } from 'shared/ui/Loader'
 import { toDoStore, ToDoCard } from 'entities/ToDo'
 import styles from './styles.module.scss'
@@ -12,8 +12,12 @@ export const ToDoList = observer(() => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await toDoStore.saveToDoToDb(task)
-    setTask('')
+    if (task.trim().length) {
+      await toDoStore.saveToDoToDb(task)
+      setTask('')
+    } else {
+      messagesStore.updateMessage('warning', 'Your task is empty.')
+    }
   }
 
   return (

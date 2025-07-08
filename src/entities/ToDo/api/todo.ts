@@ -1,8 +1,6 @@
 import { getDatabase, ref, push, set, onValue, update, remove } from 'firebase/database'
-import { messagesStore } from 'shared/ui'
 import { app } from 'entities/Auth/api/auth'
 import { type IParamsDb, type IResponseDb } from 'entities/ToDo/api/types'
-import { toDoStore } from 'entities/ToDo'
 import { firebaseDbConfig } from './config'
 
 const db = getDatabase(app, firebaseDbConfig.databaseURL)
@@ -20,49 +18,25 @@ class Api {
     const todosRef = ref(db, `users/${uid}/todos`)
     const newTodoRef = push(todosRef)
 
-    toDoStore.loaderStore.setLoading(true)
+    await set(newTodoRef, {
+      task,
+      completed: false,
+      createdAt: Date.now(),
+    })
 
-    try {
-      await set(newTodoRef, {
-        task,
-        completed: false,
-        createdAt: Date.now(),
-      })
-
-      console.log('✅ Задача добавлена')
-      messagesStore.updateMessage('success', 'New task has been added')
-      return newTodoRef.key || undefined
-    } catch (error) {
-      messagesStore.updateMessage('error', `Error: ${error}`)
-      return undefined
-    } finally {
-      toDoStore.loaderStore.setLoading(false)
-    }
+    return newTodoRef.key || undefined
   }
 
   async updateTodo(uid: string, todoId: string, updates: Partial<IParamsDb>) {
     const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
 
-    toDoStore.loaderStore.setLoading(true)
-    await update(todoRef, updates)
-    toDoStore.loaderStore.setLoading(false)
-    messagesStore.updateMessage('success', 'The task has been updated')
+    return update(todoRef, updates)
   }
 
   async removeTodo(uid: string, todoId: string) {
     const todoRef = ref(db, `users/${uid}/todos/${todoId}`)
 
-    toDoStore.loaderStore.setLoading(true)
-
-    try {
-      await remove(todoRef)
-      console.log('🗑️ Задача удалена')
-      messagesStore.updateMessage('success', 'The task has been removed')
-    } catch (error) {
-      messagesStore.updateMessage('error', `Error: ${error}`)
-    } finally {
-      toDoStore.loaderStore.setLoading(false)
-    }
+    return remove(todoRef)
   }
 }
 

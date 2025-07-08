@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useState, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import { Button, Textarea } from 'shared/ui'
-import { toDoStore } from 'entities/ToDo'
+import { toDoStore } from 'entities/ToDo/store/toDoStore'
 import { type ToDo } from 'entities/ToDo/model/ToDo'
 import styles from './styles.module.scss'
 
@@ -67,7 +67,7 @@ export const ToDoCard = observer(({ item }: IToDoCardProps) => {
           onClick={() => {
             const confirmation = confirm('Are you sure you want to remove this task?')
 
-            if (confirmation) toDoStore.removeToDoFromDb(item.id)
+            if (confirmation) void toDoStore.removeToDoFromDb(item.id)
           }}
         >
           Remove
@@ -87,7 +87,7 @@ export const ToDoCard = observer(({ item }: IToDoCardProps) => {
             type='button'
             aria-label='Update'
             onClick={() => {
-              toDoStore.updateToDoToDb(item.id, {
+              void toDoStore.updateToDoToDb(item.id, {
                 task: task,
               })
             }}
@@ -100,7 +100,7 @@ export const ToDoCard = observer(({ item }: IToDoCardProps) => {
           type='button'
           aria-label='Done'
           onClick={() => {
-            toDoStore.updateToDoToDb(item.id, {
+            void toDoStore.updateToDoToDb(item.id, {
               completed: !item.completed,
             })
           }}

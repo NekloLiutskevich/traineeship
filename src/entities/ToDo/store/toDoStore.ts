@@ -1,5 +1,6 @@
 import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import { LoaderStore } from 'shared/ui/Loader'
+import { messagesStore } from 'shared/ui'
 import { type IParamsDb, type IResponseDb } from 'entities/ToDo/api/types'
 import { ToDoApi } from 'entities/ToDo/api/todo'
 import { usersStore } from 'entities/Users'
@@ -60,19 +61,50 @@ class ToDoStore {
   async saveToDoToDb(task: string) {
     if (!usersStore.user) return
 
-    return ToDoApi.addTodo(usersStore.user.id, task)
+    this._loaderStore.setLoading(true)
+
+    try {
+      const result = await ToDoApi.addTodo(usersStore.user.id, task)
+
+      if (result) {
+        messagesStore.updateMessage('success', 'New task has been added')
+      }
+    } catch (error) {
+      messagesStore.updateMessage('error', `Error: ${String(error)}`)
+    } finally {
+      this._loaderStore.setLoading(false)
+    }
   }
 
   async updateToDoToDb(taskId: string, params: Partial<IParamsDb>) {
     if (!usersStore.user) return
 
-    return ToDoApi.updateTodo(usersStore.user.id, taskId, this.addLastUpdatedTime(params))
+    this._loaderStore.setLoading(true)
+
+    try {
+      await ToDoApi.updateTodo(usersStore.user.id, taskId, this.addLastUpdatedTime(params))
+
+      messagesStore.updateMessage('success', 'The task has been updated')
+    } catch (error) {
+      messagesStore.updateMessage('error', `Error: ${String(error)}`)
+    } finally {
+      this._loaderStore.setLoading(false)
+    }
   }
 
   async removeToDoFromDb(taskId: string) {
     if (!usersStore.user) return
 
-    return ToDoApi.removeTodo(usersStore.user.id, taskId)
+    this._loaderStore.setLoading(true)
+
+    try {
+      await ToDoApi.removeTodo(usersStore.user.id, taskId)
+      messagesStore.updateMessage('success', 'The task has been removed')
+    } catch (error) {
+      messagesStore.updateMessage('error', `Error: ${String(error)}`)
+    } finally {
+      this._loaderStore.setLoading(false)
+    }
   }
 
   get getTasks() {
